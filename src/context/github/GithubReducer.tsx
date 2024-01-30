@@ -1,4 +1,16 @@
-const githubReducer = (state, action) => {
+import { userProp } from "../../components/users/UserItem"
+
+type stateType = {
+  users: userProp[],
+  isLoading: boolean
+}
+
+type actionType = {
+  type : string,
+  payload? : any
+}
+
+const githubReducer = (state: stateType, action: actionType) => {
   switch (action.type) {
     case 'GET_USERS':
       return {...state, users: action.payload, isLoading: false}

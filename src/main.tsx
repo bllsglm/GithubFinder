@@ -4,6 +4,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import App from './App.tsx'
 import './index.css'
 import { GithubProvider } from './context/github/GithubContext.tsx'
+import { AlertProvider } from './context/alert/AlertContext.tsx'
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import About from './pages/About.tsx'
@@ -20,7 +21,9 @@ const router =createBrowserRouter(createRoutesFromElements(
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GithubProvider>
-      <RouterProvider router={router} />
+      <AlertProvider>
+       <RouterProvider router={router} />
+      </AlertProvider>
     </GithubProvider>
   </React.StrictMode>,
 )

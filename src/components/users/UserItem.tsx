@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 export type userProp = {
   user : {
-      id? : string | number,
+      id : string | number,
       login: string,
       avatar_url: string
   }
