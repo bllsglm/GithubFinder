@@ -6,7 +6,6 @@ import GithubContext from "../../context/github/GithubContext"
 const UserResults = () => {
 
   const { isLoading, users} = useContext(GithubContext)!
-  console.log(users);
   
 
   return ( isLoading ?  <Spinner/> : (

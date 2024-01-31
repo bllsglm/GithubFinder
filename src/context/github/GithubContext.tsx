@@ -10,7 +10,9 @@ type GithubContextType = {
   clearUsers: ()=> void,
   fetchUsers : (text: string) =>  Promise<void>,
   isLoading: boolean,
-  users: userProp[]
+  users: userProp[],
+  user:any,
+  getUser : (login: string) => Promise<void>
 }
 
 const GithubContext = createContext<GithubContextType | undefined>(undefined)
@@ -23,6 +25,7 @@ export const GithubProvider = ({children}:GithubProviderType) => {
 
   const initialState  = {
     users: [],
+    user:{},
     isLoading: false
   }
   const [state, dispatch] = useReducer(githubReducer, initialState)
@@ -33,17 +36,33 @@ export const GithubProvider = ({children}:GithubProviderType) => {
 
     const params = new URLSearchParams({q: text})
 
-    const response = await fetch(`${GİTHUB_URL}/search/users?${params}`, {
-      headers: {
-        Authorization : `token ${GİTHUB_TOKEN}`
-      }
-    })
+    const response = await fetch(`${GİTHUB_URL}/search/users?${params}`, {headers: {Authorization : `token ${GİTHUB_TOKEN}`}})
     const {items} = await response.json()
     dispatch({
       type : 'GET_USERS',
       payload : items
     })
   } 
+
+  // Get single user
+  const getUser = async(login: string) => {
+    setLoading()
+
+    const response = await fetch(`${GİTHUB_URL}/users/${login}`,  {headers: {Authorization : `token ${GİTHUB_TOKEN}`}})
+    
+    if(response.status === 404) {
+      window.location = '/notfound'
+     }else{
+      const data = await response.json()
+  
+      dispatch({
+        type : 'GET_USER',
+        payload : data
+      })
+     }
+  } 
+
+  
 
   const clearUsers = () => dispatch({type:'CLEAR_USERS'})
 
@@ -52,6 +71,8 @@ export const GithubProvider = ({children}:GithubProviderType) => {
   return <GithubContext.Provider value={{
     users : state.users,
     isLoading: state.isLoading,
+    user : state.user,
+    getUser,
     fetchUsers,
     clearUsers
     }}>
