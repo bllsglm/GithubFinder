@@ -1,2 +1,0 @@
-VITE_URL = "https://api.github.com"
-VITE_TOKEN = "YOUR-GUTHUB-TOKEN"

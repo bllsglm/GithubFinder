@@ -12,7 +12,9 @@ type GithubContextType = {
   isLoading: boolean,
   users: userProp[],
   user:any,
-  getUser : (login: string) => Promise<void>
+  getUser : (login: string) => Promise<void>,
+  repos: any,
+  getUserRepos : (login: string) => Promise<void>,
 }
 
 const GithubContext = createContext<GithubContextType | undefined>(undefined)
@@ -26,8 +28,10 @@ export const GithubProvider = ({children}:GithubProviderType) => {
   const initialState  = {
     users: [],
     user:{},
+    repos:[],
     isLoading: false
   }
+
   const [state, dispatch] = useReducer(githubReducer, initialState)
 
   // Get Initial  Users (testing purposes)
@@ -62,6 +66,23 @@ export const GithubProvider = ({children}:GithubProviderType) => {
      }
   } 
 
+  // Get User repos
+  const getUserRepos = async(login: string) => {
+    setLoading()
+
+    const params = new URLSearchParams({
+      sort: 'created',
+      per_page: '10'
+    })
+
+
+    const response = await fetch(`${GİTHUB_URL}/users/${login}/repos?${params}`, {headers: {Authorization : `token ${GİTHUB_TOKEN}`}})
+    const data = await response.json()
+    dispatch({
+      type : 'GET_REPOS',
+      payload : data
+    })
+  } 
   
 
   const clearUsers = () => dispatch({type:'CLEAR_USERS'})
@@ -71,10 +92,12 @@ export const GithubProvider = ({children}:GithubProviderType) => {
   return <GithubContext.Provider value={{
     users : state.users,
     isLoading: state.isLoading,
-    user : state.user,
+    user : state.user, 
     getUser,
     fetchUsers,
-    clearUsers
+    clearUsers,
+    repos: state.repos,
+    getUserRepos,
     }}>
       {children}  
   </GithubContext.Provider>
