@@ -1,4 +1,4 @@
-# React + TypeScript + Vite GITHUB Finder App
+# React + TypeScript + Vite + Tailwindcss GITHUB Finder App
 
 ![This App built with the React and TypeScript.](./github.png)
 ![](./github2.png)
@@ -18,7 +18,7 @@ This project is part of my React portfolio. It is a simple GITHUB Finder App tha
 - Easy-to-use and user-friendly interface.
 - Clean and intuitive design.
 - Responsive layout for mobile and desktop.
-- Built with (React, TypeScript.js)
+- Built with (React, TypeScript.js, Tailwindcss,DaisyUI)
 - Utilizes UseReducer and ContextApi for state management.
 
 ### Installation
@@ -34,7 +34,7 @@ npm install
 <a name="run-the-application"></a>
 
 ```bash
-# Run frontend (:3000) & backend (:5000)
+# Run frontend (:3000)
 npm run dev
 
 ```
