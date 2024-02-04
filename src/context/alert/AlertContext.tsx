@@ -5,10 +5,13 @@ type ChildrenType = {
   children: ReactNode
 }
 
-type AlertContextType = {}
+type AlertContextType = {
+  alert : {msg: string, type:string},
+  setAlert: (msg: string, type:string) => void
+}
 
 
-const AlertContext = createContext(undefined)
+const AlertContext = createContext<AlertContextType | undefined>(undefined)
 
 export const AlertProvider = ({children}: ChildrenType) => {
   const initialState = null

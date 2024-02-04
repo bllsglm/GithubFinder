@@ -5,19 +5,28 @@ import { useEffect, useContext } from "react"
 import GithubContext from "../context/github/GithubContext"
 import { useParams } from "react-router-dom"
 import RepoList from '../components/repos/RepoList'
+import { getUserandRepos } from '../context/github/GithubActions'
+
+
 
 const User = () => {
-  const {getUser, user, isLoading, users, getUserRepos, repos} = useContext(GithubContext)
+  const { user, isLoading, repos, dispatch} = useContext(GithubContext)!
 
   const params = useParams()
 
-  const {name,type,avatar_url,location,bio,blog,twitter_username,login,html_url,followers,following,public_repos,public_gists,hireable} = user
 
   useEffect(()=> {
-    getUser(params.login)
-    getUserRepos(params.login)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    dispatch({type: 'SET_LOADING'})
+    const getUserData = async() => {
+    const UserandRepoData = await getUserandRepos(params.login!)
+    dispatch({type: 'GET_USER_AND_REPOS', payload: UserandRepoData})
+    }
+
+    getUserData()
+  }, [dispatch,params.login])
+
+  const {name,type,avatar_url,location,bio,blog,twitter_username,login,html_url,followers,following,public_repos,public_gists,hireable} = user!
+
 
   if(isLoading){
     return <Spinner/>
@@ -135,7 +144,7 @@ const User = () => {
           </div>
 
         </div>
-        <RepoList repos={repos}/>
+        <RepoList repos={repos!}/>
       </div>
     </>
   )
